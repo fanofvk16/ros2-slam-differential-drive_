@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<robot name="swarm_bot">
+
+
+<!-- ================= BASE FOOTPRINT ================= -->
+<link name="base_footprint"/>
+
+<joint name="base_footprint_joint" type="fixed">
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+  <origin xyz="0 0 0"/>
+</joint>
+
+  <!-- ================= BASE ================= -->
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.16"/>
+      <geometry>
+        <box size="0.5 0.4 0.12"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.16"/>
+      <geometry>
+        <box size="0.5 0.4 0.12"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0.12"/>
+      <mass value="8.0"/>
+      <inertia ixx="0.3" ixy="0" ixz="0"
+               iyy="0.3" iyz="0"
+               izz="0.3"/>
+    </inertial>
+  </link>
+
+
+  <!-- ================= LEFT DRIVE WHEEL ================= -->
+  <link name="left_wheel">
+    <visual>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.10" length="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.10" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+               iyy="0.01" iyz="0"
+               izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin xyz="0.1 0.22 0.04"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+
+  <!-- ================= RIGHT DRIVE WHEEL ================= -->
+  <link name="right_wheel">
+    <visual>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.10" length="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.10" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0"
+               iyy="0.01" iyz="0"
+               izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin xyz="0.1 -0.22 0.04"/>
+    <axis xyz="0 -1 0"/>
+  </joint>
+
+
+  <!-- ================= REAR CASTER WHEEL ================= -->
+  <link name="caster_wheel">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.3"/>
+      <inertia ixx="0.001" ixy="0" ixz="0"
+               iyy="0.001" iyz="0"
+               izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_wheel"/>
+    <origin xyz="-0.16 0 -0.01"/>
+  </joint>
+
+
+
+
+  <!-- ================= LIDAR ================= -->
+  <link name="laser_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.05"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="0.05" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.2"/>
+      <inertia ixx="0.001" ixy="0" ixz="0"
+               iyy="0.001" iyz="0"
+               izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+      <origin xyz="0 0 0.23"/>
+  </joint>
+
+ <gazebo reference="laser_link">
+  <sensor type="ray" name="lidar">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>true</visualize>
+    <update_rate>10.0</update_rate>
+
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>360</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14</min_angle>
+          <max_angle>3.14</max_angle>
+        </horizontal>
+      </scan>
+      <range>
+        <min>0.1</min>
+        <max>10.0</max>
+        <resolution>0.01</resolution>
+      </range>
+    </ray>
+
+    <plugin name="gazebo_ros_ray_sensor"
+            filename="libgazebo_ros_ray_sensor.so">
+      <ros>
+        <remapping>~/out:=scan</remapping>
+      </ros>
+      <frame_name>laser_link</frame_name>
+      <output_type>sensor_msgs/LaserScan</output_type>
+    </plugin>
+
+  </sensor>
+</gazebo>
+
+  <!-- ================= FRONT WEIGHT BOX ================= -->
+<link name="front_weight">
+
+  <visual>
+    <geometry>
+      <box size="0.25 0.20 0.20"/>
+    </geometry>
+    <material name="grey"/>
+  </visual>
+
+  <collision>
+    <geometry>
+      <box size="0.25 0.20 0.20"/>
+    </geometry>
+  </collision>
+
+  <inertial>
+    <mass value="3.0"/>
+    <inertia ixx="0.02" ixy="0" ixz="0"
+             iyy="0.02" iyz="0"
+             izz="0.02"/>
+  </inertial>
+
+</link>
+
+<joint name="front_weight_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="front_weight"/>
+  <origin xyz="-0.05 0 0.1"/>
+</joint>
+
+
+
+  <!-- ================= DIFFERENTIAL DRIVE ================= -->
+  <gazebo>
+    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+
+      <wheel_separation>0.44</wheel_separation>
+      <wheel_diameter>0.20</wheel_diameter>
+
+      <max_wheel_torque>20</max_wheel_torque>
+      <max_wheel_acceleration>5.0</max_wheel_acceleration>
+
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+
+      <command_topic>cmd_vel</command_topic>
+      <odometry_topic>odom</odometry_topic>
+
+    </plugin>
+  </gazebo>
+
+</robot>
