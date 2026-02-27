@@ -1,4 +1,4 @@
-# 🧠 ROS2 SLAM-Based Differential Drive Robot (Gazebo Simulation)
+#ROS2 SLAM-Based Differential Drive Robot (Gazebo Simulation)
 
 ## 📌 Project Overview
 This project implements a custom differential drive robot in ROS2 Humble using:
