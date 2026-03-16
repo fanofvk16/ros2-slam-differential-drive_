@@ -1,6 +1,6 @@
 #ROS2 SLAM-Based Differential Drive Robot (Gazebo Simulation)
 
-## 📌 Project Overview
+## Project Overview
 This project implements a custom differential drive robot in ROS2 Humble using:
 
 - Gazebo 11 Simulation
@@ -18,14 +18,14 @@ The robot can:
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 
 Gazebo World → Lidar → robot_state_publisher → SLAM → Map → RViz
 
 ---
 
-## 📂 Folder Structure
-## 📁 Folder Structure
+## Folder Structure
+
 
 ```
 swarm_ws1/
